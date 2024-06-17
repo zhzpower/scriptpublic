@@ -1,5 +1,12 @@
-#!/usr/bin/env python3
-# _*_ coding:utf-8 _*_
+"""
+send today event to dingtalk with openai
+
+任务名称
+name: 今日大事件
+定时规则
+cron: 1 9 * * *
+
+"""
 import os
 from openai import OpenAI
 import requests
