@@ -42,8 +42,3 @@ message = {
 response = requests.post(webhook_url, json=message)
 print("发送结果：", response.text)
 
-# 获取环境变量
-import os
-
-print(os.getenv('OPENAI_API_KEY'))
-
