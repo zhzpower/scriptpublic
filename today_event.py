@@ -52,5 +52,5 @@ message = {
         "text": content
     }
 }
-response = requests.post(webhook_url, json=message)
+response = requests.post(webhook_url, json=message, timeout=15)
 print("发送结果：", response.text)
