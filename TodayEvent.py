@@ -8,22 +8,26 @@ BASEURL = os.getenv('BASEURL')
 ACCESSTOKEN = os.getenv('ACCESSTOKEN')
 
 client = OpenAI(
-    api_key=APIKEY,
-    base_url=BASEURL,
+    api_key = APIKEY,
+    base_url = BASEURL,
 )
 
 print("#############################开始获取今天事件， 使用模式：metaso 研究搜索")
 response = client.chat.completions.create(
-    model="metaso", #
-    messages=[ 
-        {"role": "user", "content": "研究搜索：今天发生的国内外经济和军事大事件. 请用markdown格式输出, 分别输出今天发生的国内外经济和军事大事件。军事方面重点关注中国、俄罗斯、美国、乌克兰、新加坡、澳大利亚、日本、欧洲、中东等方面的消息。"}
+    model = "metaso", #
+    messages = [ 
+        {"role": "user", "content": """
+        研究搜索：今天发生的国内外经济和军事大事件. 请用markdown格式输出, 分别输出今天发生的国内外经济和军事大事件。
+        军事方面重点关注中国、俄罗斯、美国、乌克兰、新加坡、澳大利亚、日本、欧洲、中东等方面的消息。
+        """
+        }
     ],
     # stream = True,
-    temperature=0,
-    max_tokens=4096,
-    top_p=1,
-    frequency_penalty=0,
-    presence_penalty=0
+    temperature = 0,
+    max_tokens = 4096,
+    top_p = 1,
+    frequency_penalty = 0,
+    presence_penalty = 0 
 )
 
 content = response.choices[0].message.content
