@@ -12,6 +12,7 @@ client = OpenAI(
     base_url=BASEURL,
 )
 
+print("#############################开始获取今天事件， 使用模式：metaso 研究搜索")
 response = client.chat.completions.create(
     model="metaso", #
     messages=[ 
@@ -28,6 +29,7 @@ response = client.chat.completions.create(
 content = response.choices[0].message.content
 print(content)
 
+print("\n\n#############################获取今天事件完成， 开始发送钉钉消息")
 # 通过webhook发送钉钉日报
 webhook_url = f"https://oapi.dingtalk.com/robot/send?access_token={ACCESSTOKEN}"
 message = {
@@ -38,9 +40,10 @@ message = {
     }
 }
 response = requests.post(webhook_url, json=message)
-print(response.text)
+print("发送结果：", response.text)
 
 # 获取环境变量
 import os
 
 print(os.getenv('OPENAI_API_KEY'))
+
