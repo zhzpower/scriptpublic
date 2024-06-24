@@ -14,18 +14,18 @@ from .tgparser import parse_messages
 from .tglog import a
 
 a("获取TG的历史消息中...")
-config = None
+CONFIG = None
 try:
-    config = __import__("config")
+    CONFIG = __import__("config")
 except ImportError:
     pass
 
-if config is not None:
-    session_name = config.session_name
-    api_id = config.api_id
-    api_hash = config.api_hash
-    tg_channels = config.tg_channels
-    session_string = config.session_string
+if CONFIG is not None:
+    session_name = CONFIG.session_name
+    api_id = CONFIG.api_id
+    api_hash = CONFIG.api_hash
+    tg_channels = CONFIG.tg_channels
+    session_string = CONFIG.session_string
 else:
     session_name = os.getenv('tg_session_name')
     api_id = os.getenv('tg_api_id')
