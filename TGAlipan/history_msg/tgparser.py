@@ -7,15 +7,14 @@ import json
 import requests
 from .tglog import p
 
-config = None
+CONFIG = None
 try:
-    config = __import__("config")
+    CONFIG = __import__("config")
 except ImportError:
     pass
 
-if config is not None:
-    config = __import__("config")
-    host = config.host
+if CONFIG is not None:
+    host = CONFIG.host
 else:
     host = os.getenv('tg_host')
 
