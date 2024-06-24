@@ -41,8 +41,8 @@ print(f""" 配置信息：
 
 try:
     # client = TelegramClient(session_name, api_id, api_hash, proxy=proxy)
-    # proxy = ('http', '192.168.50.120', 7890)
-    proxy = ()
+    proxy = ('http', '192.168.50.120', 7890)
+    # proxy = ()
     client = TelegramClient(StringSession(session_string), api_id, api_hash, proxy=proxy)
     client.start() # client.connect()
 except AuthKeyError:
