@@ -12,14 +12,10 @@ from telethon.sync import TelegramClient as SyncTelegramClient
 from telethon.sessions import StringSession
 from .tgparser import parse_messages
 from .tglog import a
+from .tgutils import load_config
 
 a("获取TG的历史消息中...")
-CONFIG = None
-try:
-    CONFIG = __import__("config")
-except ImportError:
-    pass
-
+CONFIG = load_config()
 if CONFIG is not None:
     session_name = CONFIG.session_name
     api_id = CONFIG.api_id

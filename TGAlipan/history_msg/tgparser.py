@@ -6,13 +6,9 @@ import re
 import json
 import requests
 from .tglog import p
+from .tgutils import load_config
 
-CONFIG = None
-try:
-    CONFIG = __import__("config")
-except ImportError:
-    pass
-
+CONFIG = load_config()
 if CONFIG is not None:
     host = CONFIG.host
 else:
