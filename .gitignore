@@ -2,3 +2,4 @@
 ### Python
 .git/
 Config.py
+**/__pycache__/*
