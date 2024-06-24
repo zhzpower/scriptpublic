@@ -34,7 +34,8 @@ print(f""" 配置信息：
 
 try:
     # client = TelegramClient(session_name, api_id, api_hash, proxy=proxy)
-    proxy = ('http', '192.168.50.120', 7890)
+    # proxy = ('http', '192.168.50.120', 7890)
+    proxy = ()
     client = TelegramClient(StringSession(session_string), api_id, api_hash, proxy=proxy)
     client.start() # client.connect()
 except AuthKeyError:
@@ -44,7 +45,7 @@ except AuthKeyError:
 # 群组的用户名或ID；Quark_Share_Channel
 total_messages: list[list[str]] = []
 max_len = 0
-for channel in tg_channels:
+for channel in tg_channels.split(','):
     # 获取群组实体
     group_entity = client.get_entity(channel)
     # 获取历史消息
