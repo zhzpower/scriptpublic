@@ -1,3 +1,10 @@
+"""
+任务名称
+name: 订阅TG频道中阿里云盘的 电视剧
+定时规则
+cron: 1 9 * * *
+"""
+
 import os
 from telethon import TelegramClient, events
 from telethon.errors.rpcerrorlist import AuthKeyError
