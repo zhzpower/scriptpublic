@@ -14,17 +14,19 @@ from .tgparser import parse_messages
 from .tglog import a
 
 a("获取TG的历史消息中...")
+config = None
 try:
     config = __import__("config")
+except ImportError:
+    pass
+
+if config is not None:
     session_name = config.session_name
     api_id = config.api_id
     api_hash = config.api_hash
     tg_channels = config.tg_channels
     session_string = config.session_string
-except ValueError:
-    print("请在config.py中配置TG的信息")
-except Exception as e:
-    a(e)
+else:
     session_name = os.getenv('tg_session_name')
     api_id = os.getenv('tg_api_id')
     api_hash = os.getenv('tg_api_hash')

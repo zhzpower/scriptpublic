@@ -7,13 +7,16 @@ import json
 import requests
 from .tglog import p
 
+config = None
 try:
     config = __import__("config")
+except ImportError:
+    pass
+
+if config is not None:
+    config = __import__("config")
     host = config.host
-except ValueError:
-    print("请在config.py中配置TG的信息")
-except Exception as e:
-    p(e)
+else:
     host = os.getenv('tg_host')
 
 print(f""" 配置信息：
@@ -81,7 +84,7 @@ def get_url_from_msg(msg: str) -> str | None:
         for link in matches:
             print("找到的链接:", link)
         return matches.pop(0)
-    
+
     print("没有找到链接")
     return None
 
