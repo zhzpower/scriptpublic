@@ -3,7 +3,6 @@ import re
 import json
 import requests
 import tglog
-import config
 
 try:
     config = __import__("config")
