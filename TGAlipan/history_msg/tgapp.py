@@ -21,6 +21,8 @@ try:
     api_hash = config.api_hash
     tg_channels = config.tg_channels
     session_string = config.session_string
+except ValueError:
+    print("请在config.py中配置TG的信息")
 except Exception as e:
     a(e)
     session_name = os.getenv('tg_session_name')

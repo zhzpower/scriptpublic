@@ -1,3 +1,6 @@
+"""
+解析TG消息，获取电视剧订阅列表，更新到cloud中
+"""
 import os
 import re
 import json
@@ -7,6 +10,8 @@ from .tglog import p
 try:
     config = __import__("config")
     host = config.host
+except ValueError:
+    print("请在config.py中配置TG的信息")
 except Exception as e:
     p(e)
     host = os.getenv('tg_host')
@@ -15,8 +20,10 @@ print(f""" 配置信息：
     tg_host: {host}
     """)
 
-# 解析消息数组，转换为VideoInfoModel数组
 def parse_messages(messages: list[str]) -> None:
+    """
+    解析消息数组，转换为数组
+    """
     p(f"开始解析，共{len(messages)}条<telegram>消息。。。")
     shows = tv_series_subscription_list()
     p(f"开始解析，共{len(shows)}条<订阅>消息。。。")
@@ -74,25 +81,19 @@ def get_url_from_msg(msg: str) -> str | None:
         for link in matches:
             print("找到的链接:", link)
         return matches.pop(0)
-    else:
-        print("没有找到链接")
-        return None
+    
+    print("没有找到链接")
+    return None
 
 def tv_series_subscription_list() -> list:
     """
 +    从视频数据库API获取TV系列订阅列表。
-+
 +    返回:
 +        list: 一个包含TV系列订阅信息的列表。每个字典包含TV系列名称、流派和发行年份等信息。
-+
-+    引发:
-+        requests.exceptions.RequestException: 如果与API进行HTTP请求时出现错误。
-+
 +    示例用法:
 +        subscriptions = tv_series_subscription_list()
 +        for subscription in subscriptions:
 +            print(subscription['name'], subscription['tmdbID'], subscription['subscribeURL'])
-
     """
     url = f"https://{host}/api/shows"
     # url = "http://localhost:8787/api/shows"
@@ -100,6 +101,9 @@ def tv_series_subscription_list() -> list:
     return resp.json()
 
 def update_tv_subscription_list(datas: list):
+    """
+    更新订阅列表
+    """
     p("开始更新订阅列表")
     # 更新订阅列表
     url = f"https://{host}/api/shows"
@@ -108,5 +112,5 @@ def update_tv_subscription_list(datas: list):
     p("更新完成：", resp.text)
 
 if __name__ == '__main__':
-    shows = tv_series_subscription_list()
-    print(shows)
+    temp_shows = tv_series_subscription_list()
+    print(temp_shows)
