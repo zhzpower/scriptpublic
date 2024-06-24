@@ -1,7 +1,19 @@
+import os
 import re
 import json
 import requests
 import tglog
+import config
+
+try:
+    config = __import__("config")
+    host = config.host
+except:
+    host = os.getenv('tg_host')
+
+print(f""" 配置信息：
+    tg_host: {host}
+    """)
 
 # 解析消息数组，转换为VideoInfoModel数组
 def parse_messages(messages: list[str]) -> None:
@@ -195,7 +207,7 @@ def tv_series_subscription_list() -> list:
 +            print(subscription['name'], subscription['tmdbID'], subscription['subscribeURL'])
 
     """
-    url = "https://video-database.zhz99.workers.dev/api/shows"
+    url = f"https://{host}/api/shows"
     # url = "http://localhost:8787/api/shows"
     resp = requests.get(url)
     return resp.json()
@@ -203,7 +215,7 @@ def tv_series_subscription_list() -> list:
 def update_tv_subscription_list(datas: list):
     tglog.p("开始更新订阅列表")
     # 更新订阅列表
-    url = "https://video-database.zhz99.workers.dev/api/shows"
+    url = f"https://{host}/api/shows"
     # url = "http://localhost:8787/api/shows"
     resp = requests.put(url, json=json.dumps(datas))
     tglog.p("更新完成：", resp.text)
