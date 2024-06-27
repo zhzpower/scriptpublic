@@ -39,8 +39,11 @@ def i(module: TGModule, *args):
     """
     打印当前时间和给定模块的值，以及任何附加参数。
     """
-    full_str = " ".join(args)
-    print(f"{datetime.datetime.now().time()} +[{module.value}]: {full_str}")
+    try:
+        full_str = " ".join(args)
+        print(f"{datetime.datetime.now().time()} +[{module.value}]: {full_str}")
+    except Exception as e:
+        print(f"{datetime.datetime.now().time()} +[{module.value}]: {args}")
 
 if __name__ == "__main__":
     i("test")
