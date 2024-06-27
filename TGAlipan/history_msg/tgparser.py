@@ -24,6 +24,7 @@ def parse_messages(messages: list[str]) -> None:
     """
     p(f"开始解析，共{len(messages)}条<telegram>消息。。。")
     shows = tv_series_subscription_list()
+    p(f"订阅的数据：{shows}")
     p(f"开始解析，共{len(shows)}条<订阅>消息。。。")
 
     valid_tv_dicts = {} # tmdbID : tv_dict
@@ -32,7 +33,7 @@ def parse_messages(messages: list[str]) -> None:
         tmdb_id = tv["tmdbID"]
         tv_name = tv["name"]
         p(f"开始查找：{tv_name}")
-        if tmdb_id is None:
+        if tmdb_id is None or tv_name is None:
             continue
 
         for msg in messages:
