@@ -33,12 +33,12 @@ def parse_messages(messages: list[str]) -> None:
         tmdb_id = tv["tmdbID"]
         tv_name = tv["name"]
         p(f"开始查找：{tv_name}")
-        if tmdb_id is None or tv_name is None:
+        if tmdb_id is None:
             continue
 
         for msg in messages:
         # 过滤监听的电视剧
-            if tv_name.lower() in msg and ('alipan' in msg or 'aliyundrive' in msg):
+            if tv_name is None and tv_name.lower() in msg and ('alipan' in msg or 'aliyundrive' in msg):
                 p("✅✅✅✅找到：", tv_name)
                 subscribe_url = get_url_from_msg(msg)
                 if subscribe_url is not None:
