@@ -38,7 +38,7 @@ def parse_messages(messages: list[str]) -> None:
 
         for msg in messages:
         # 过滤监听的电视剧
-            if tv_name is None and tv_name.lower() in msg and ('alipan' in msg or 'aliyundrive' in msg):
+            if tv_name is not None and tv_name.lower() in msg and ('alipan' in msg or 'aliyundrive' in msg):
                 p("✅✅✅✅找到：", tv_name)
                 subscribe_url = get_url_from_msg(msg)
                 if subscribe_url is not None:
