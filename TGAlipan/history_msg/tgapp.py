@@ -22,12 +22,14 @@ if CONFIG is not None:
     api_hash = CONFIG.api_hash
     tg_channels = CONFIG.tg_channels
     session_string = CONFIG.session_string
+    use_proxy = False
 else:
     session_name = os.getenv('tg_session_name')
     api_id = os.getenv('tg_api_id')
     api_hash = os.getenv('tg_api_hash')
     tg_channels = os.getenv('tg_tg_channels')
     session_string = os.getenv('tg_session_string')
+    use_proxy = True
 
 print(f""" 配置信息：
     tg_channels：{tg_channels}
@@ -42,8 +44,10 @@ print(f""" 配置信息：
 
 try:
     # client = TelegramClient(session_name, api_id, api_hash, proxy=proxy)
-    # proxy = ('http', '192.168.50.120', 7890)
-    proxy = ()
+    if use_proxy:
+        proxy = ('http', '192.168.50.120', 7890)
+    else:
+        proxy = ()
     client = TelegramClient(StringSession(session_string), api_id, api_hash, proxy=proxy)
     client.start() # client.connect()
 except AuthKeyError:
