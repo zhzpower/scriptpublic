@@ -5,8 +5,8 @@ import os
 import re
 import json
 import requests
-from .tglog import p
-from .tgutils import load_config
+from tglog import p
+from tgutils import load_config
 
 CONFIG = load_config()
 if CONFIG is not None:

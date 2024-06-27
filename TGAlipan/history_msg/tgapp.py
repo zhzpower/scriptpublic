@@ -10,9 +10,9 @@ from telethon import TelegramClient
 from telethon.errors.rpcerrorlist import AuthKeyError
 from telethon.sync import TelegramClient as SyncTelegramClient
 from telethon.sessions import StringSession
-from .tgparser import parse_messages
-from .tglog import a
-from .tgutils import load_config
+from tgparser import parse_messages
+from tglog import a
+from tgutils import load_config
 
 a("获取TG的历史消息中...")
 CONFIG = load_config()

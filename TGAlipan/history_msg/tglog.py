@@ -9,31 +9,31 @@
     无
 """
 import datetime
-from .tgmodelclass import TGModule
+from tgmodelclass import TGModule
 
 def a(*args):
     """
     打印当前时间和给定模块的值，以及任何附加参数。
     """
-    i(TGModule.TG_API_MSG, args)
+    i(TGModule.TG_API_MSG, *args)
 
 def p(*args):
     """
     打印当前时间和给定模块的值，以及任何附加参数。
     """
-    i(TGModule.TG_PARSE, args)
+    i(TGModule.TG_PARSE, *args)
 
 def s(*args):
     """
     打印当前时间和给定模块的值，以及任何附加参数。
     """
-    i(TGModule.TG_SUBSCRIBE, args)
+    i(TGModule.TG_SUBSCRIBE, *args)
 
 def d(*args):
     """
     打印当前时间和给定模块的值，以及任何附加参数。
     """
-    i(TGModule.TG_DOWNLOAD, args)
+    i(TGModule.TG_DOWNLOAD, *args)
 
 def i(module: TGModule, *args):
     """
