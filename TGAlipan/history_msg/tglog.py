@@ -42,7 +42,7 @@ def i(module: TGModule, *args):
     try:
         full_str = " ".join(args)
         print(f"{datetime.datetime.now().time()} +[{module.value}]: {full_str}")
-    except Exception as e:
+    except Exception:
         print(f"{datetime.datetime.now().time()} +[{module.value}]: {args}")
 
 if __name__ == "__main__":
