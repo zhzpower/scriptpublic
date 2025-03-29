@@ -8,11 +8,33 @@ from datetime import datetime
 import requests
 import os
 # from config import ALIST_HOST, ALIST_USERNAME, ALIST_PASSWORD
-HOST = os.getenv('ALIST_HOST')
+
+def load_config():
+    """加载配置信息"""
+    config = None
+    try:
+        config = __import__("config")
+    except ImportError:
+        print("config.py 文件不存在，请检查配置！")
+    return config
+
+CONFIG = load_config()
+if CONFIG is not None:
+    HOST = CONFIG.ALIST_HOST
+    USERNAME = CONFIG.ALIST_USERNAME
+    PASSWORD = CONFIG.ALIST_PASSWORD
+    ARIA2_URL = CONFIG.ARIA2_URL
+    ARIA2_TOKEN = CONFIG.ARIA2_TOKEN
+else:
+    HOST = os.getenv('ALIST_HOST')
+    USERNAME = os.getenv('ALIST_USERNAME')
+    PASSWORD = os.getenv('ALIST_PASSWORD')
+    ARIA2_URL = os.getenv('ARIA2_URL')
+    ARIA2_TOKEN = os.getenv('ARIA2_TOKEN')
+ALL_DOWNLOAD_FILES = {}
 AUTHTOKEN_URL = f'{HOST}/api/auth/login/hash'
 ALIST_FILELIST_URL = f'{HOST}/api/fs/list'
 Authorization_ALIST = ""
-ALL_DOWNLOAD_FILES = {}
 
 def request(url, method='POST', data=None):
     headers = {
@@ -35,8 +57,8 @@ def request(url, method='POST', data=None):
 def get_auth_token():
     print('获取auth_token')
     data = {
-        "username": os.getenv('ALIST_USERNAME'),
-        "password": os.getenv('ALIST_PASSWORD'),
+        "username": USERNAME,
+        "password": PASSWORD,
         "otp_code": ""
     }
     response = request(AUTHTOKEN_URL, 'POST', data)
@@ -92,7 +114,7 @@ def download_file(file_url, dir, file_name):
         "id": "quark.download",
         "method": "aria2.addUri",
         "params": [
-            os.getenv('ARIA2_TOKEN'),
+            ARIA2_TOKEN,
             [ file_url ],
             {
                 "dir": f"/downloads/{dir}",
@@ -102,20 +124,24 @@ def download_file(file_url, dir, file_name):
             }
         ]
     }
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(ARIA2_URL, headers=headers, json=data)
     print(response.text)
 
 def list_all_has_download_files():
     global ALL_DOWNLOAD_FILES
     download_path = os.path.abspath('../download')
-    for tv_name in os.listdir(download_path):
-        # 构建完整的路径
-        tv_fold_path = os.path.join(download_path, tv_name)
+    if os.path.exists(download_path):
+        for tv_name in os.listdir(download_path):
+            # 构建完整的路径
+            tv_fold_path = os.path.join(download_path, tv_name)
         ALL_DOWNLOAD_FILES[tv_name] = []
         for file in os.listdir(tv_fold_path):
             ALL_DOWNLOAD_FILES[tv_name].append(file)
 
 def main():
+    # 获取已经下载的文件
+    list_all_has_download_files()
+
     global Authorization_ALIST
     # 获取auth_token
     token = get_auth_token()
@@ -161,8 +187,8 @@ def main():
                 if len(download_file_list) > 0:
                     download_file_list = download_file_list[:5]
                     print(f'⏬⏬⏬⏬开始提交下载{file_name}: {len(download_file_list)}个文件')
-                    for file in download_file_list:
-                        download_file(file['file_url'], file['dir'], file_name)
+                    for download in download_file_list:
+                        download_file(download['file_url'], download['dir'], download['file_name'])
                     print(f'⏬⏬⏬⏬⏬⏬下载完成')
 if __name__ == '__main__':
     main()
