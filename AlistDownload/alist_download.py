@@ -1,3 +1,9 @@
+"""
+任务名称
+name: 通过Alist下载资源
+定时规则
+cron: 0,20,40,50 0,1,2,7,8,9,10,11,22 * * *
+"""
 from datetime import datetime
 import requests
 import os
