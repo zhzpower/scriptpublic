@@ -37,6 +37,14 @@ ALIST_FILELIST_URL = f'{HOST}/api/fs/list'
 Authorization_ALIST = ""
 
 def request(url, method='POST', data=None):
+    """
+    请求Alist
+    @param url: 请求url
+    @param method: 请求方法
+    @param data: 请求数据
+    @return: 请求结果
+    """
+    print(f'请求url: {url}')
     headers = {
         "accept": "application/json, text/plain, */*",
         "accept-encoding": "gzip, deflate",
@@ -55,6 +63,10 @@ def request(url, method='POST', data=None):
 
 
 def get_auth_token():
+    """
+    获取auth_token
+    @return: auth_token
+    """
     print('获取auth_token')
     data = {
         "username": USERNAME,
@@ -67,9 +79,13 @@ def get_auth_token():
         return response['data']['token']
     else:
         return None
-    
-# 获取文件列表
+
 def get_alist_file_list(path):
+    """
+    获取Alist文件列表
+    @param path: 文件路径
+    @return: 文件列表
+    """
     data = {
         "path": path,
         "password":"",
@@ -84,17 +100,21 @@ def get_alist_file_list(path):
         return None
 
 def get_valid_file(episode, tv_name):
-    # 过滤有效文件
     """
+    过滤有效文件
     1. 文件名包含“.mp4 .mkv .rmvb”
     2. created时间(2025-03-28T15:50:36.37Z)在 今日0点 之后
     3. is_dir 为 False
     4. 文件名在ALL_DOWNLOAD_FILES中不存在
+    @param episode: 文件信息
+    @param tv_name: 电视剧名称
+    @return: 是否有效
     """
     if episode['is_dir'] == True:
         return False
     global ALL_DOWNLOAD_FILES
     if episode['name'] in ALL_DOWNLOAD_FILES.get(tv_name, []):
+        print(f'{episode["name"]}已经下载过')
         return False
     flag = episode['name'].endswith('.mp4') or episode['name'].endswith('.mkv') or episode['name'].endswith('.rmvb')
     if flag == False:
@@ -105,7 +125,12 @@ def get_valid_file(episode, tv_name):
     return True
 
 def download_file(file_url, dir, file_name):
-    # 下载文件
+    """
+    下载文件
+    @param file_url: 文件url
+    @param dir: 文件夹名称
+    @param file_name: 文件名称
+    """
     print(f'⏬⏬⏬⏬⏬⏬下载文件:{dir}/{file_name}')
     headers = {"Content-Type": "application/json"}
     data = {
@@ -129,6 +154,10 @@ def download_file(file_url, dir, file_name):
     print(response.text)
 
 def list_all_has_download_files():
+    """
+    获取已经下载的文件
+    @return: 已经下载的文件列表
+    """
     global ALL_DOWNLOAD_FILES
     download_path = os.path.abspath('/ql/data/download')
     if os.path.exists(download_path):
@@ -143,6 +172,9 @@ def list_all_has_download_files():
         print(f'获取已经下载的文件失败: {download_path}')
 
 def main():
+    """
+    主函数
+    """
     # 获取已经下载的文件
     list_all_has_download_files()
 
@@ -177,7 +209,7 @@ def main():
                     for episode in file_list:
                         if episode['is_dir'] == False:
                             file_path = dir + '/' + file_name + '/' + episode['name']
-                            print(f'        {file_path} --成功')
+                            # print(f'        {file_path} --成功')
                             # 过滤有效文件
                             if get_valid_file(episode, file['name']):
                                 print(f'        过滤有效文件-{file_path}')
@@ -196,6 +228,8 @@ def main():
                     print(f'⏬⏬⏬⏬⏬⏬下载完成')
                 else:
                     print(f'⏬⏬⏬⏬⏬⏬{file_name}没有文件需要下载')
+
+
 if __name__ == '__main__':
     main()
 
