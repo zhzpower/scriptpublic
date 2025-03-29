@@ -4,7 +4,7 @@ name: 通过Alist下载资源
 定时规则
 cron: 0,20,40,50 0,1,2,7,8,9,10,11,22 * * *
 """
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 import os
 # from config import ALIST_HOST, ALIST_USERNAME, ALIST_PASSWORD
@@ -103,7 +103,7 @@ def get_valid_file(episode, tv_name):
     """
     过滤有效文件
     1. 文件名包含“.mp4 .mkv .rmvb”
-    2. created时间(2025-03-28T15:50:36.37Z)在 今日0点 之后
+    2. created时间(2025-03-28T15:50:36.37Z)距离现在时间小于24小时
     3. is_dir 为 False
     4. 文件名在ALL_DOWNLOAD_FILES中不存在
     @param episode: 文件信息
@@ -120,8 +120,10 @@ def get_valid_file(episode, tv_name):
     if flag == False:
         return False
     # 过滤今日0点之后的文件
-    if episode['created'] < datetime.now().strftime('%Y-%m-%d 00:00:00'):
-        return False
+    if episode['created']:
+        created_time = datetime.strptime(episode['created'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        if created_time < datetime.now() - timedelta(hours=24):
+            return False
     return True
 
 def download_file(file_url, dir, file_name):
