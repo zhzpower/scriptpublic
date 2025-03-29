@@ -160,9 +160,9 @@ def main():
                 download_file_list.sort(key=lambda x: x['file_name'])
                 if len(download_file_list) > 0:
                     download_file_list = download_file_list[:5]
-                    print(f'⏬⏬⏬⏬开始提交下载{file['name']}: {len(download_file_list)}个文件')
+                    print(f'⏬⏬⏬⏬开始提交下载{file_name}: {len(download_file_list)}个文件')
                     for file in download_file_list:
-                        download_file(file['file_url'], file['dir'], file['file_name'])
+                        download_file(file['file_url'], file['dir'], file_name)
                     print(f'⏬⏬⏬⏬⏬⏬下载完成')
 if __name__ == '__main__':
     main()
