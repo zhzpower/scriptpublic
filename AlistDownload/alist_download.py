@@ -107,7 +107,6 @@ def get_valid_file(episode, tv_name):
 def download_file(file_url, dir, file_name):
     # 下载文件
     print(f'⏬⏬⏬⏬⏬⏬下载文件:{dir}/{file_name}')
-    url = os.getenv('ARIA2_URL')
     headers = {"Content-Type": "application/json"}
     data = {
         "jsonrpc": "2.0",
@@ -124,12 +123,14 @@ def download_file(file_url, dir, file_name):
             }
         ]
     }
+    print(ARIA2_URL)
+    print(data)
     response = requests.post(ARIA2_URL, headers=headers, json=data)
     print(response.text)
 
 def list_all_has_download_files():
     global ALL_DOWNLOAD_FILES
-    download_path = os.path.abspath('../download')
+    download_path = os.path.abspath('/ql/data/download')
     if os.path.exists(download_path):
         for tv_name in os.listdir(download_path):
             # 构建完整的路径
@@ -137,6 +138,9 @@ def list_all_has_download_files():
         ALL_DOWNLOAD_FILES[tv_name] = []
         for file in os.listdir(tv_fold_path):
             ALL_DOWNLOAD_FILES[tv_name].append(file)
+        print(f'获取已经下载的文件成功: {ALL_DOWNLOAD_FILES}')
+    else:
+        print(f'获取已经下载的文件失败: {download_path}')
 
 def main():
     # 获取已经下载的文件
