@@ -138,7 +138,7 @@ def download_file(file_url, dir, file_name):
         "id": "quark.download",
         "method": "aria2.addUri",
         "params": [
-            ARIA2_TOKEN,
+            "token:"+ARIA2_TOKEN,
             [ file_url ],
             {
                 "dir": f"/downloads/{dir}",
@@ -227,7 +227,7 @@ def main():
                         download_file(download['file_url'], download['dir'], download['file_name'])
                     print(f'⏬⏬⏬⏬⏬⏬下载完成')
                 else:
-                    print(f'⏬⏬⏬⏬⏬⏬{file_name}没有文件需要下载')
+                    print(f'🍵🍵🍵🍵🍵🍵{file_name}没有文件需要下载')
 
 
 if __name__ == '__main__':
