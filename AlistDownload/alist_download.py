@@ -79,14 +79,14 @@ def get_valid_file(episode, tv_name):
 def download_file(file_url, dir, file_name):
     # 下载文件
     print(f'⏬⏬⏬⏬⏬⏬下载文件:{dir}/{file_name}')
-    url = "http://192.168.50.138:6800/jsonrpc"
+    url = os.getenv('ARIA2_URL')
     headers = {"Content-Type": "application/json"}
     data = {
         "jsonrpc": "2.0",
         "id": "quark.download",
         "method": "aria2.addUri",
         "params": [
-            "token:zhz123",
+            os.getenv('ARIA2_TOKEN'),
             [ file_url ],
             {
                 "dir": f"/downloads/{dir}",
@@ -131,15 +131,16 @@ def main():
             print(f'获取{dir}文件夹成功')
             for file in file_list:
                 download_file_list = []
-                file_list = get_alist_file_list(dir + '/' + file['name'])
+                file_name = file['name']
+                file_list = get_alist_file_list(dir + '/' + file_name)
                 if file_list is None:
-                    print(f'    获取{dir}/{file["name"]}文件夹--失败')
+                    print(f'    获取{dir}/{file_name}文件夹--失败')
                     continue
                 else:
-                    print(f'    {dir}/{file["name"]}文件夹--成功')
+                    print(f'    {dir}/{file_name}文件夹--成功')
                     for episode in file_list:
                         if episode['is_dir'] == False:
-                            file_path = dir + '/' + file['name'] + '/' + episode['name']
+                            file_path = dir + '/' + file_name + '/' + episode['name']
                             print(f'        {file_path} --成功')
                             # 过滤有效文件
                             if get_valid_file(episode, file['name']):
