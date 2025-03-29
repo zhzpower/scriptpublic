@@ -194,6 +194,8 @@ def main():
                     for download in download_file_list:
                         download_file(download['file_url'], download['dir'], download['file_name'])
                     print(f'⏬⏬⏬⏬⏬⏬下载完成')
+                else:
+                    print(f'⏬⏬⏬⏬⏬⏬{file_name}没有文件需要下载')
 if __name__ == '__main__':
     main()
 
